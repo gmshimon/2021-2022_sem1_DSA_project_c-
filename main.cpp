@@ -19,6 +19,13 @@ class Student{
         age=0;
         next=NULL;
     }
+    void setInfo(int ID,string n,string s,float c, int a){
+    	name=n;
+    	study=s;
+    	cgpa=c;
+    	age=a;
+    	id=ID;
+	}
 };
 
 class Stack{
@@ -29,7 +36,7 @@ class Stack{
             top=NULL;
         }
         //checking the stack is empty or not
-         bool isEmpty(){
+        bool isEmpty(){
             if(top==NULL){
                 return true;
             }
@@ -86,7 +93,6 @@ class Stack{
 			}
 			remove("Student.txt");
 			rename("example.txt", "Student.txt");
-		 
 		}
         
         //check the node
@@ -104,9 +110,8 @@ class Stack{
         }
         //push the node
         void push(Student *s) {
-            // ofstream file_out("Student.txt",ios::app);
+            
             if(top==NULL){
-                // file_out<<s->id<<" "<<s->name<<" "<<s->study<<" "<<s->cgpa<<" "<<s->age<<endl;
                 top=s;
             }
             else if(checkNode(s)){
@@ -116,7 +121,6 @@ class Stack{
                 Student* temp=top;
                 top=s;
                 s->next=temp;
-                // file_out<<s->id<<" "<<s->name<<" "<<s->study<<" "<<s->cgpa<<" "<<s->age<<endl;
                 cout<<"Node pushed"<<endl;
             }
         }
@@ -151,75 +155,232 @@ class Stack{
             }
         }
         
-};
+};//end of stack class
 
-int main(){
-
-    Stack s1;
-    int option, position;
-    string name;
-    string study;
-    float cgpa;
-    int age;
-    int id;
-
-    do{
-    	
-        cout<<"What operation do you want to perform? Select Option number."<<endl<<"Enter 0 to exist"<<endl;
-        cout<<"###############"<<endl;
-        cout<<"1. Add Student"<<endl;
-        cout<<"2. Delete Student file"<<endl;
-        cout<<"3. isEmpty()"<<endl;
-        cout<<"4. Display()"<<endl;
-        cout<<"5. Clear Screen"<<endl;
+class Queue{
+	
+	public:
+		Student*front,*rear;
+		Queue(){
+			front=NULL;
+			rear=NULL;
+		}
+		
+		//checking wheather list is empty or not 
+        bool isEmpty(){
+            if(front==NULL&&rear==NULL){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
         
-        cout<<"(Enter Your Option): ";
-        cin>>option;
-        
-        Student* s=new Student();
-        
-
-        switch(option){
-            case 1: 
-                cout<<"=======Enter Student Details======="<<endl;
-                cout<<"Student id: ";cin>>id;
-                cout<<"Student name: ";cin>>name;
-                cout<<"Student study background: ";cin>>study;
-                cout<<"Student CGPA: ";cin>>cgpa;
-                cout<<"Student age: "; cin>>age;
-                s->id=id;
-                s->name=name;
-                s->study=study;
-                s->cgpa=cgpa;
-                s->age=age;
-                s1.push(s);
-                s1.addToList(s);
-                break;
-            case 2:
-                s1.pop();
-//                s1.kola();
-                break;
-            case 3:
-                if(s1.isEmpty()){
-                    cout<<"Stack is empty"<<endl;
+        //check the new node exist or note
+        bool checkIfNodeExist(Student* s){
+            Student*temp=front;
+            bool exist=false;
+            while(temp!=NULL){
+                if(temp->id==s->id){
+                    exist=true;
+                    break;
+                }
+                temp=temp->next;
+            }
+            return exist;
+        }
+		
+		//enQueue function
+		void enQueue(Student*s){
+			if(isEmpty()){
+				front=s;
+				rear=s;
+			}
+//			else if(checkIfNodeExist(s)){
+//                cout<<"Node already exist"<<endl;
+//            }
+			else{
+				rear->next=s;
+				rear=s;
+			}
+		}
+		
+		//shortlist the applicant
+		void shortlistApplicant(){
+			if(isEmpty()){
+				cout<<"Queue is empty"<<endl;
+			}
+			else{
+				ofstream sl_out("shortListedApplicant.txt",ios::app);
+				string ch;
+				Student* temp=front;
+				while(temp!=NULL){
+					cout<<"|||||||||||||Student Details|||||||||||||"<<endl;
+					cout<<"Student ID: "<<temp->id<<endl;
+					cout<<"Student name: "<<temp->name<<endl;
+					cout<<endl;
+					cout<<"Do you want to shortlist the applicant. Press y or no";
+					cin>>ch;
+					if(ch=="y"||ch=="Y"){
+            			sl_out<<temp->id<<" "<<temp->name<<" "<<temp->study<<" "<<temp->cgpa<<" "<<temp->age<<endl;
+					}
+					temp=temp->next;
+				}
+				
+			}
+		}
+		
+		//deQueue function
+        void deQueue(){
+           Student* temp=NULL;
+            if(isEmpty()){
+               cout<<"queue is empty"<<endl;
+            } 
+            else{
+                if(front==rear){
+                    temp=front;
+                    front==NULL;
+                    rear=NULL;
                 }
                 else{
-                    cout<<"Stack is not empty"<<endl;
+                    temp=front;
+                    front=front->next;
                 }
-                break;
-            case 4:
-                s1.display();
-                break;
-             case 5:
-                system("cls");
-                break;
-            default:
-                cout<<"Wrong operation number"<<endl;
-
+            }
         }
-    }while(option!=0);
+        
+        //display all nodes in the queue
+        void display(){
+            if(isEmpty()){
+                cout<<"queue is empty"<<endl;
+            }
+            else{
+                cout<<"printing all nodes: "<<endl;
+                Student* temp=front;
+                while(temp!=NULL){
+                    cout<<"Key: "<<temp->id<<"Data: "<<temp->name<<endl;
+                    temp=temp->next;
+                }
+            }
+        }
+
+};
+
+
+int main(){
+	
+	int choice;
+	cout<<"#################Welcome to the company#################"<<endl;
+	cout<<"Enter your choice below.. Enter 0 to exit"<<endl;
+	cout<<"1. HR manager"<<endl;
+	cout<<"2. Hiring panel"<<endl;
+	cout<<"Enter your choice: ";cin>>choice;
+	
+	switch(choice){
+		case 1:{
+			Queue q;
+			int option, position;
+		    string name;
+		    string study;
+		    float cgpa;
+		    int age;
+		    int id;
+		    
+		    fstream infile("Student.txt",ios::in);
+			int i=0;
+			int count=0;
+			//checking the file is empty or not
+//			infile.seekg(0,is.end);
+//			int length = is.tellg();
+//			if(length==0){
+//				cout<<"No data in the file"<<endl;
+//			}
+//			
+			
+			while(!infile.eof()){
+				Student* ss=new Student();
+				count++;
+				infile>>id>>name>>study>>cgpa>>age;
+				
+				ss->setInfo(id,name,study,cgpa,age);
+				q.enQueue(ss);
+				i++;
+			}
+			
+			q.display();
+			q.shortlistApplicant();
+		    
+			break;
+		}
+		case 2:{
+			
+			Stack s1;
+		    int option, position;
+		    string name;
+		    string study;
+		    float cgpa;
+		    int age;
+		    int id;
+		
+		    do{
+		        cout<<"What operation do you want to perform? Select Option number."<<endl<<"Enter 0 to exist"<<endl;
+		        cout<<"###############"<<endl;
+		        cout<<"1. Add Student"<<endl;
+		        cout<<"2. Delete Student file"<<endl;
+		        cout<<"3. isEmpty()"<<endl;
+		        cout<<"4. Display()"<<endl;
+		        cout<<"5. Clear Screen"<<endl;
+		        
+		        cout<<"(Enter Your Option): ";
+		        cin>>option;
+		        
+		        Student* s=new Student();
+		        
+		
+		        switch(option){
+		            case 1: 
+		                cout<<"=======Enter Student Details======="<<endl;
+		                cout<<"Student id: ";cin>>id;
+		                cout<<"Student name: ";cin>>name;
+		                cout<<"Student study background: ";cin>>study;
+		                cout<<"Student CGPA: ";cin>>cgpa;
+		                cout<<"Student age: "; cin>>age;
+		                s->id=id;
+		                s->name=name;
+		                s->study=study;
+		                s->cgpa=cgpa;
+		                s->age=age;
+		                s1.push(s);
+		                s1.addToList(s);
+		                break;
+		            case 2:
+		                s1.pop();
+		                break;
+		            case 3:
+		                if(s1.isEmpty()){
+		                    cout<<"Stack is empty"<<endl;
+		                }
+		                else{
+		                    cout<<"Stack is not empty"<<endl;
+		                }
+		                break;
+		            case 4:
+		                s1.display();
+		                break;
+		             case 5:
+		                system("cls");
+		                break;
+		            default:
+		                cout<<"Wrong operation number"<<endl;
+		
+		        }
+		    }while(option!=0);
+			
+			break;
+		}////
+	}
+
     
-//    s1.addToList();
     
     return 0;
 }

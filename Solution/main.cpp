@@ -52,7 +52,7 @@ class Stack{
     	}
         
         //delete the last line of the file 
-        void kola(){
+        void deleteLastLine(){
         	string line;   // To read each line from code
 			int count=0;    // Variable to keep count of each line
 	
@@ -109,30 +109,33 @@ class Stack{
             return exist;
         }
         //push the node
-        void push(Student *s) {
+        void addStudent(Student *s) {
             
             if(top==NULL){
+            	addToList(s);
                 top=s;
             }
             else if(checkNode(s)){
-                cout<<"Same key already exist in the stack"<<endl;
+                cout<<"xxxxxxx(ERROR : Same ID exists)xxxxxxx"<<endl;
             }
             else{
+            	addToList(s);
                 Student* temp=top;
                 top=s;
                 s->next=temp;
-                cout<<"Node pushed"<<endl;
+                
+                cout<<"Applicant Added"<<endl;
             }
         }
 
         //pop operation 
-        void pop(){
+        void deleteStudent(){
             Student *temp=NULL;
             if(isEmpty()){
                 cout<<"Stack is empty"<<endl;
             }
             else{
-            	kola();
+            	deleteLastLine();
                 temp=top;
                 top=top->next;
                 delete temp;
@@ -196,9 +199,6 @@ class Queue{
 				front=s;
 				rear=s;
 			}
-//			else if(checkIfNodeExist(s)){
-//                cout<<"Node already exist"<<endl;
-//            }
 			else{
 				rear->next=s;
 				rear=s;
@@ -208,21 +208,26 @@ class Queue{
 		//shortlist the applicant
 		void shortlistApplicant(){
 			if(isEmpty()){
-				cout<<"Queue is empty"<<endl;
+				cout<<"No data"<<endl;
 			}
 			else{
 				ofstream sl_out("shortListedApplicant.txt",ios::app);
 				string ch;
 				Student* temp=front;
 				while(temp!=NULL){
-					cout<<"|||||||||||||Student Details|||||||||||||"<<endl;
-					cout<<"Student ID: "<<temp->id<<endl;
-					cout<<"Student name: "<<temp->name<<endl;
-					cout<<endl;
-					cout<<"Do you want to shortlist the applicant. Press y or no";
+					cout<<endl<<"|||||||||||||Applicant Details|||||||||||||"<<endl;
+					cout<<"Applicant ID: "<<temp->id<<endl;
+					cout<<"Applicant name: "<<temp->name<<endl;
+					cout<<"Applicant cgpa: "<<temp->cgpa<<endl;
+					cout<<"Applicant age: "<<temp->age<<endl;
+					cout<<"Do you want to shortlist the applicant. Press y or n: ";
 					cin>>ch;
 					if(ch=="y"||ch=="Y"){
             			sl_out<<temp->id<<" "<<temp->name<<" "<<temp->study<<" "<<temp->cgpa<<" "<<temp->age<<endl;
+						cout<<"Applicant has been shortlisted"<<endl<<endl;
+					}
+					else{
+						cout<<"Applicant data not added"<<endl;
 					}
 					temp=temp->next;
 				}
@@ -258,7 +263,11 @@ class Queue{
                 cout<<"printing all nodes: "<<endl;
                 Student* temp=front;
                 while(temp!=NULL){
-                    cout<<"Key: "<<temp->id<<"Data: "<<temp->name<<endl;
+                   cout<<endl<<"|||||||||||||Applicant Details|||||||||||||"<<endl;
+					cout<<"Applicant ID: "<<temp->id<<endl;
+					cout<<"Applicant name: "<<temp->name<<endl;
+					cout<<"Applicant cgpa: "<<temp->cgpa<<endl;
+					cout<<"Applicant age: "<<temp->age<<endl;
                     temp=temp->next;
                 }
             }
@@ -270,117 +279,122 @@ class Queue{
 int main(){
 	
 	int choice;
-	cout<<"#################Welcome to the company#################"<<endl;
-	cout<<"Enter your choice below.. Enter 0 to exit"<<endl;
-	cout<<"1. HR manager"<<endl;
-	cout<<"2. Hiring panel"<<endl;
-	cout<<"Enter your choice: ";cin>>choice;
-	
-	switch(choice){
-		case 1:{
-			Queue q;
-			int option, position;
-		    string name;
-		    string study;
-		    float cgpa;
-		    int age;
-		    int id;
-		    
-		    fstream infile("Student.txt",ios::in);
-			int i=0;
-			int count=0;
-			//checking the file is empty or not
-//			infile.seekg(0,is.end);
-//			int length = is.tellg();
-//			if(length==0){
-//				cout<<"No data in the file"<<endl;
-//			}
-//			
-			
-			while(!infile.eof()){
-				Student* ss=new Student();
-				count++;
-				infile>>id>>name>>study>>cgpa>>age;
+	do{
+		cout<<"#################Welcome to the company#################"<<endl;
+		cout<<"Enter your choice below.. Enter 0 to exit"<<endl;
+		cout<<"1. HR manager"<<endl;
+		cout<<"2. Hiring panel"<<endl;
+		cout<<"3. Clear Screen"<<endl;
+		cout<<endl<<"Enter your choice: ";cin>>choice;
+		switch(choice){
+			case 0: break;
+			case 1:{
+				Queue q;
+				int option, option2;
+				string name;
+				string study;
+				float cgpa;
+				int age;
+				int id;
 				
-				ss->setInfo(id,name,study,cgpa,age);
-				q.enQueue(ss);
-				i++;
-			}
+				fstream infile("Student.txt",ios::in);
+				int i=0;
+				int count=0;
 			
-			q.display();
-			q.shortlistApplicant();
-		    
-			break;
-		}
-		case 2:{
-			
-			Stack s1;
-		    int option, position;
-		    string name;
-		    string study;
-		    float cgpa;
-		    int age;
-		    int id;
-		
-		    do{
-		        cout<<"What operation do you want to perform? Select Option number."<<endl<<"Enter 0 to exist"<<endl;
-		        cout<<"###############"<<endl;
-		        cout<<"1. Add Student"<<endl;
-		        cout<<"2. Delete Student file"<<endl;
-		        cout<<"3. isEmpty()"<<endl;
-		        cout<<"4. Display()"<<endl;
-		        cout<<"5. Clear Screen"<<endl;
-		        
-		        cout<<"(Enter Your Option): ";
-		        cin>>option;
-		        
-		        Student* s=new Student();
-		        
-		
-		        switch(option){
-		            case 1: 
-		                cout<<"=======Enter Student Details======="<<endl;
-		                cout<<"Student id: ";cin>>id;
-		                cout<<"Student name: ";cin>>name;
-		                cout<<"Student study background: ";cin>>study;
-		                cout<<"Student CGPA: ";cin>>cgpa;
-		                cout<<"Student age: "; cin>>age;
-		                s->id=id;
-		                s->name=name;
-		                s->study=study;
-		                s->cgpa=cgpa;
-		                s->age=age;
-		                s1.push(s);
-		                s1.addToList(s);
-		                break;
-		            case 2:
-		                s1.pop();
-		                break;
-		            case 3:
-		                if(s1.isEmpty()){
-		                    cout<<"Stack is empty"<<endl;
-		                }
-		                else{
-		                    cout<<"Stack is not empty"<<endl;
-		                }
-		                break;
-		            case 4:
-		                s1.display();
-		                break;
-		             case 5:
-		                system("cls");
-		                break;
-		            default:
-		                cout<<"Wrong operation number"<<endl;
-		
-		        }
-		    }while(option!=0);
-			
-			break;
-		}////
-	}
+				infile>>id>>name>>study>>cgpa>>age;
+				while(!infile.eof()){
+					Student* ss=new Student();
+					// count++;
+					ss->setInfo(id,name,study,cgpa,age);
+					infile>>id>>name>>study>>cgpa>>age;
+					
+					q.enQueue(ss);
+					// i++;
+				}
+				cout<<endl;
+				
+				cout<<endl<<"What Do you want to do"<<endl;
+				cout<<"1. Display All applicant"<<endl;
+				cout<<"2. Shortlist Applicant"<<endl;
+				cout<<endl<<"Enter your choice: ";
+				cin>>option2;
 
-    
-    
+				switch(option2){
+					case 0: break;
+					case 1:
+						q.display();
+						break;
+					case 2:
+						q.shortlistApplicant();
+						break;
+					default:
+						cout<<"Wrong choice"<<endl;
+				}
+				
+				break;
+			}
+			case 2:{
+				
+				Stack s1;
+				int option, position;
+				string name;
+				string study;
+				float cgpa;
+				int age;
+				int id;
+			
+				do{
+					cout<<"What operation do you want to perform? Select Option number."<<endl<<"Enter 0 to exist"<<endl;
+					cout<<"###############"<<endl;
+					cout<<"1. Add Applicant"<<endl;
+					cout<<"2. Delete Applicant"<<endl;
+					cout<<"3. Display Applicant"<<endl;
+					cout<<"4. Clear Screen"<<endl;
+					
+					cout<<endl<<"(Enter Your Option): ";
+					cin>>option;
+					
+					Student* s=new Student();
+					
+			
+					switch(option){
+						case 1: 
+							cout<<"=======Enter Student Details======="<<endl;
+							cout<<"Student id: ";cin>>id;
+							cout<<"Student name: ";cin>>name;
+							cout<<"Student study background: ";cin>>study;
+							cout<<"Student CGPA: ";cin>>cgpa;
+							cout<<"Student age: "; cin>>age;
+							s->id=id;
+							s->name=name;
+							s->study=study;
+							s->cgpa=cgpa;
+							s->age=age;
+							s1.addStudent(s);
+							break;
+						case 2:
+							s1.deleteStudent();
+							break;
+						case 3:
+							s1.display();
+							break;
+						case 4:
+							system("cls");
+							break;
+						default:
+							cout<<"Wrong operation number"<<endl;
+			
+					}
+				}while(option!=0);
+				
+				break;
+			}////
+			case 3: system("cls");
+			break;
+			default:
+				cout<<"Wrong choice..Please Enter correct option"<<endl;
+				break;
+		}
+	}while(choice!=0);
     return 0;
 }

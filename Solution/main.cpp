@@ -3,16 +3,16 @@
 #include<vector>
 using namespace std;
 
-class Student{
+class Applicant{
     public:
         string name;
         string study;
         float cgpa;
         int age;
         int id;
-        Student* next;
+        Applicant* next;
 
-    Student(){
+    Applicant(){
         name=" ";
         study=" ";
         cgpa=0.0;
@@ -31,7 +31,7 @@ class Student{
 class Stack{
 
     public:
-        Student* top;
+        Applicant* top;
         Stack(){
             top=NULL;
         }
@@ -46,8 +46,8 @@ class Stack{
         }
         
         //add to file
-        void addToList(Student *s){
-            ofstream file_out("Student.txt",ios::app);
+        void addToList(Applicant *s){
+            ofstream file_out("Applicant.txt",ios::app);
             file_out<<s->id<<" "<<s->name<<" "<<s->study<<" "<<s->cgpa<<" "<<s->age<<endl;
     	}
         
@@ -56,7 +56,7 @@ class Stack{
         	string line;   // To read each line from code
 			int count=0;    // Variable to keep count of each line
 	
-			ifstream mFile ("Student.txt"); 
+			ifstream mFile ("Applicant.txt"); 
 			//get the number of line in a file 
 			if(mFile.is_open()) 
 			{
@@ -75,7 +75,7 @@ class Stack{
 			//remove the last line of the line 
 			string line2; 
 			vector<string> lines;
-			ifstream inputStream("Student.txt");
+			ifstream inputStream("Applicant.txt");
 			
 			while (getline(inputStream,line2)) {
 			    lines.push_back(line2);
@@ -91,13 +91,13 @@ class Stack{
 			    }
 			    outputStream.close();
 			}
-			remove("Student.txt");
-			rename("example.txt", "Student.txt");
+			remove("Applicant.txt");
+			rename("example.txt", "Applicant.txt");
 		}
         
         //check the node
-        bool checkNode(Student* s){
-            Student* temp=top;
+        bool checkNode(Applicant* s){
+            Applicant* temp=top;
             bool exist = false;
             while(temp!=NULL){
                 if(temp->id==s->id){
@@ -109,7 +109,7 @@ class Stack{
             return exist;
         }
         //push the node
-        void addStudent(Student *s) {
+        void addApplicant(Applicant *s) {
             
             if(top==NULL){
             	addToList(s);
@@ -120,7 +120,7 @@ class Stack{
             }
             else{
             	addToList(s);
-                Student* temp=top;
+                Applicant* temp=top;
                 top=s;
                 s->next=temp;
                 
@@ -129,8 +129,8 @@ class Stack{
         }
 
         //pop operation 
-        void deleteStudent(){
-            Student *temp=NULL;
+        void deleteApplicant(){
+            Applicant *temp=NULL;
             if(isEmpty()){
                 cout<<"Stack is empty"<<endl;
             }
@@ -139,13 +139,13 @@ class Stack{
                 temp=top;
                 top=top->next;
                 delete temp;
-                cout<<"Student data is deleted"<<endl;
+                cout<<"Applicant data is deleted"<<endl;
             }
         }
 
         //print the all elements
         void display(){
-            Student *temp;
+            Applicant *temp;
             temp=top;
             if(isEmpty()){
                 cout<<"Stack is empty"<<endl;
@@ -163,7 +163,7 @@ class Stack{
 class Queue{
 	
 	public:
-		Student*front,*rear;
+		Applicant*front,*rear;
 		Queue(){
 			front=NULL;
 			rear=NULL;
@@ -180,8 +180,8 @@ class Queue{
         }
         
         //check the new node exist or note
-        bool checkIfNodeExist(Student* s){
-            Student*temp=front;
+        bool checkIfNodeExist(Applicant* s){
+            Applicant*temp=front;
             bool exist=false;
             while(temp!=NULL){
                 if(temp->id==s->id){
@@ -194,7 +194,7 @@ class Queue{
         }
 		
 		//enQueue function
-		void enQueue(Student*s){
+		void enQueue(Applicant*s){
 			if(isEmpty()){
 				front=s;
 				rear=s;
@@ -213,7 +213,7 @@ class Queue{
 			else{
 				ofstream sl_out("shortListedApplicant.txt",ios::app);
 				string ch;
-				Student* temp=front;
+				Applicant* temp=front;
 				while(temp!=NULL){
 					cout<<endl<<"|||||||||||||Applicant Details|||||||||||||"<<endl;
 					cout<<"Applicant ID: "<<temp->id<<endl;
@@ -237,7 +237,7 @@ class Queue{
 		
 		//deQueue function
         void deQueue(){
-           Student* temp=NULL;
+           Applicant* temp=NULL;
             if(isEmpty()){
                cout<<"queue is empty"<<endl;
             } 
@@ -261,7 +261,7 @@ class Queue{
             }
             else{
                 cout<<"printing all nodes: "<<endl;
-                Student* temp=front;
+                Applicant* temp=front;
                 while(temp!=NULL){
                    cout<<endl<<"|||||||||||||Applicant Details|||||||||||||"<<endl;
 					cout<<"Applicant ID: "<<temp->id<<endl;
@@ -296,13 +296,13 @@ int main(){
 				int age;
 				int id;
 				
-				fstream infile("Student.txt",ios::in);
+				fstream infile("Applicant.txt",ios::in);
 				int i=0;
 				int count=0;
 			
 				infile>>id>>name>>study>>cgpa>>age;
 				while(!infile.eof()){
-					Student* ss=new Student();
+					Applicant* ss=new Applicant();
 					// count++;
 					ss->setInfo(id,name,study,cgpa,age);
 					infile>>id>>name>>study>>cgpa>>age;
@@ -353,26 +353,26 @@ int main(){
 					cout<<endl<<"(Enter Your Option): ";
 					cin>>option;
 					
-					Student* s=new Student();
+					Applicant* s=new Applicant();
 					
 			
 					switch(option){
 						case 1: 
-							cout<<"=======Enter Student Details======="<<endl;
-							cout<<"Student id: ";cin>>id;
-							cout<<"Student name: ";cin>>name;
-							cout<<"Student study background: ";cin>>study;
-							cout<<"Student CGPA: ";cin>>cgpa;
-							cout<<"Student age: "; cin>>age;
+							cout<<"=======Enter Applicant Details======="<<endl;
+							cout<<"Applicant id: ";cin>>id;
+							cout<<"Applicant name: ";cin>>name;
+							cout<<"Applicant study background: ";cin>>study;
+							cout<<"Applicant CGPA: ";cin>>cgpa;
+							cout<<"Applicant age: "; cin>>age;
 							s->id=id;
 							s->name=name;
 							s->study=study;
 							s->cgpa=cgpa;
 							s->age=age;
-							s1.addStudent(s);
+							s1.addApplicant(s);
 							break;
 						case 2:
-							s1.deleteStudent();
+							s1.deleteApplicant();
 							break;
 						case 3:
 							s1.display();

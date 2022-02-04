@@ -66,7 +66,7 @@ class Stack{
 					count++;
 				}
 				mFile.close();
-				cout<<"Number of lines in the file are: "<<count<<endl;
+				// cout<<"Number of lines in the file are: "<<count<<endl;
 			}
 			else
 				cout<<"Couldn't open the file\n";
@@ -108,6 +108,37 @@ class Stack{
             }
             return exist;
         }
+
+		//Search an applicant
+        bool searchApplicant(int searchID){
+
+			string name;
+			string study;
+			float cgpa;
+			int age;
+			int id;
+
+			int found=0;
+
+			fstream infile("Applicant.txt",ios::in);
+			infile>>id>>name>>study>>cgpa>>age;
+			while(!infile.eof()){
+				if(id==searchID){
+					cout<<endl<<"|||||||||||||Applicant Details|||||||||||||"<<endl;
+					cout<<"Applicant ID: "<<id<<endl;
+					cout<<"Applicant name: "<<name<<endl;
+					cout<<"Applicant cgpa: "<<cgpa<<endl;
+					cout<<"Applicant age: "<<age<<endl;
+					cout<<endl;
+					found=1;
+				}
+				infile>>id>>name>>study>>cgpa>>age;				
+			}
+			if(found==0){
+            	cout<<"Applicant not found"<<endl;
+			}
+        }
+
         //push the node
         void addApplicant(Applicant *s) {
             
@@ -152,7 +183,10 @@ class Stack{
             }
             else{
                 while(temp!=NULL){
-                    cout<<"ID: "<<temp->id<<endl;
+                    cout<<"Student ID: "<<temp->id<<endl;
+                    cout<<"Student Name: "<<temp->name<<endl;
+                    cout<<"Student CGPA: "<<temp->cgpa<<endl;
+                    cout<<"Student age: "<<temp->age<<endl;
                     temp=temp->next;
                 }
             }
@@ -179,18 +213,23 @@ class Queue{
             }
         }
         
-        //check the new node exist or note
-        bool checkIfNodeExist(Applicant* s){
+        //Search an applicant
+        bool searchApplicant(int id){
             Applicant*temp=front;
             bool exist=false;
             while(temp!=NULL){
-                if(temp->id==s->id){
+                if(temp->id==id){
+					cout<<endl<<"|||||||||||||Applicant Details|||||||||||||"<<endl;
+					cout<<"Applicant ID: "<<temp->id<<endl;
+					cout<<"Applicant name: "<<temp->name<<endl;
+					cout<<"Applicant cgpa: "<<temp->cgpa<<endl;
+					cout<<"Applicant age: "<<temp->age<<endl;
                     exist=true;
                     break;
                 }
                 temp=temp->next;
             }
-            return exist;
+            cout<<"Applicant not found"<<endl;
         }
 		
 		//enQueue function
@@ -235,25 +274,6 @@ class Queue{
 			}
 		}
 		
-		//deQueue function
-        void deQueue(){
-           Applicant* temp=NULL;
-            if(isEmpty()){
-               cout<<"queue is empty"<<endl;
-            } 
-            else{
-                if(front==rear){
-                    temp=front;
-                    front==NULL;
-                    rear=NULL;
-                }
-                else{
-                    temp=front;
-                    front=front->next;
-                }
-            }
-        }
-        
         //display all nodes in the queue
         void display(){
             if(isEmpty()){
@@ -297,24 +317,24 @@ int main(){
 				int id;
 				
 				fstream infile("Applicant.txt",ios::in);
-				int i=0;
-				int count=0;
+
+				int searchID;
 			
 				infile>>id>>name>>study>>cgpa>>age;
 				while(!infile.eof()){
 					Applicant* ss=new Applicant();
-					// count++;
+					
 					ss->setInfo(id,name,study,cgpa,age);
 					infile>>id>>name>>study>>cgpa>>age;
 					
 					q.enQueue(ss);
-					// i++;
 				}
 				cout<<endl;
 				
 				cout<<endl<<"What Do you want to do"<<endl;
 				cout<<"1. Display All applicant"<<endl;
 				cout<<"2. Shortlist Applicant"<<endl;
+				cout<<"3. Search applicant"<<endl;
 				cout<<endl<<"Enter your choice: ";
 				cin>>option2;
 
@@ -325,6 +345,11 @@ int main(){
 						break;
 					case 2:
 						q.shortlistApplicant();
+						break;
+					case 3: 
+						cout<<"Search the Applicant...."<<endl<<"Enter Applicant ID: ";
+						cin>>searchID;
+						q.searchApplicant(searchID);
 						break;
 					default:
 						cout<<"Wrong choice"<<endl;
@@ -348,7 +373,8 @@ int main(){
 					cout<<"1. Add Applicant"<<endl;
 					cout<<"2. Delete Applicant"<<endl;
 					cout<<"3. Display Applicant"<<endl;
-					cout<<"4. Clear Screen"<<endl;
+					cout<<"4. Search Applicant"<<endl;
+					cout<<"5. Clear Screen"<<endl;
 					
 					cout<<endl<<"(Enter Your Option): ";
 					cin>>option;
@@ -378,6 +404,12 @@ int main(){
 							s1.display();
 							break;
 						case 4:
+							int searchID;
+							cout<<"Search the Applicant...."<<endl<<"Enter Applicant ID: ";
+							cin>>searchID;
+							s1.searchApplicant(searchID);
+							break;
+						case 5:
 							system("cls");
 							break;
 						default:

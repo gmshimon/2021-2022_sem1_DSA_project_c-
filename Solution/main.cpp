@@ -110,7 +110,7 @@ class Stack{
         }
 
 		//Search an applicant
-        bool searchApplicant(int searchID){
+        void searchApplicant(int searchID){
 
 			string name;
 			string study;
@@ -135,7 +135,7 @@ class Stack{
 				infile>>id>>name>>study>>cgpa>>age;				
 			}
 			if(found==0){
-            	cout<<"Applicant not found"<<endl;
+            	cout<<"Applicant not found"<<endl<<endl;
 			}
         }
 
@@ -214,7 +214,7 @@ class Queue{
         }
         
         //Search an applicant
-        bool searchApplicant(int id){
+        void searchApplicant(int id){
         	int found=0;
             Applicant*temp=front;
             
@@ -233,7 +233,7 @@ class Queue{
                 temp=temp->next;
             }
             if(found==0){
-            	cout<<"Applicant not found"<<endl;
+            	cout<<"Applicant not found"<<endl<<endl;
 			}
         }
 		

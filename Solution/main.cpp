@@ -215,8 +215,9 @@ class Queue{
         
         //Search an applicant
         bool searchApplicant(int id){
+        	int found=0;
             Applicant*temp=front;
-            bool exist=false;
+            
             while(temp!=NULL){
                 if(temp->id==id){
 					cout<<endl<<"|||||||||||||Applicant Details|||||||||||||"<<endl;
@@ -224,12 +225,16 @@ class Queue{
 					cout<<"Applicant name: "<<temp->name<<endl;
 					cout<<"Applicant cgpa: "<<temp->cgpa<<endl;
 					cout<<"Applicant age: "<<temp->age<<endl;
-                    exist=true;
+					
+                	found=1;
+                
                     break;
                 }
                 temp=temp->next;
             }
-            cout<<"Applicant not found"<<endl;
+            if(found==0){
+            	cout<<"Applicant not found"<<endl;
+			}
         }
 		
 		//enQueue function
@@ -337,7 +342,7 @@ int main(){
 				cout<<"3. Search applicant"<<endl;
 				cout<<endl<<"Enter your choice: ";
 				cin>>option2;
-
+				cout<<endl;
 				switch(option2){
 					case 0: break;
 					case 1:

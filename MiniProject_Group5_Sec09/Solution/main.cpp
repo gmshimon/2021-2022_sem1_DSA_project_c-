@@ -36,7 +36,7 @@ class Applicant{
      cgpa=c; 
      age=a; 
      id=ID; 
- } 
+    } 
 }; 
  
 class Stack{ 
@@ -60,51 +60,47 @@ class Stack{
         void addToList(Applicant *s){ 
             ofstream file_out("Applicant.txt",ios::app); 
             file_out<<s->id<<" "<<s->name<<" "<<s->study<<" "<<s->cgpa<<" "<<s->age<<endl; 
-     } 
+        } 
          
         //delete the last line of the file  
         void deleteLastLine(){ 
-         string line;   // To read each line from code 
-   int count=0;    // Variable to keep count of each line 
+        string line;   // To read each line from code 
+  	    int count=0;    // Variable to keep count of each line 
   
-   ifstream mFile ("Applicant.txt");  
-   //get the number of line in a file  
-   if(mFile.is_open())  
-   { 
-    while(mFile.peek()!=EOF) 
-    { 
-     getline(mFile, line); 
-     count++; 
+	    ifstream mFile ("Applicant.txt");  
+	    //get the number of line in a file  
+	    if(mFile.is_open()){ 
+		    while(mFile.peek()!=EOF){ 
+			    getline(mFile, line); 
+			    count++; 
+		    } 
+		    mFile.close(); 
+		    // cout<<"Number of lines in the file are: "<<count<<endl; 
+	    } 
+	    else 
+	    cout<<"Couldn't open the file\n"; 
+	     
+	    //remove the last line of the line  
+	    string line2;  
+	    vector<string> lines; 
+	    ifstream inputStream("Applicant.txt"); 
+	    
+	    while (getline(inputStream,line2)){ 
+	       lines.push_back(line2); 
+	    } 
+	    inputStream.close(); 
+	    
+	    fstream outputStream("example.txt", ios::out | ios::trunc); 
+	    if (outputStream.is_open()){ 
+	       for (int i=0; i < lines.size()-1; i++) 
+	       { 
+	           outputStream << lines[i] << "\n"; 
+	       } 
+	       outputStream.close(); 
+	    } 
+	   remove("Applicant.txt"); 
+	   rename("example.txt", "Applicant.txt"); 
     } 
-    mFile.close(); 
-    // cout<<"Number of lines in the file are: "<<count<<endl; 
-   } 
-   else 
-    cout<<"Couldn't open the file\n"; 
-     
-    
-   //remove the last line of the line  
-   string line2;  
-   vector<string> lines; 
-   ifstream inputStream("Applicant.txt"); 
-    
-   while (getline(inputStream,line2)) { 
-       lines.push_back(line2); 
-   } 
-   inputStream.close(); 
-    
-   fstream outputStream("example.txt", ios::out | ios::trunc); 
-   if (outputStream.is_open()) 
-   { 
-       for (int i=0; i < lines.size()-1; i++) 
-       { 
-           outputStream << lines[i] << "\n"; 
-       } 
-       outputStream.close(); 
-   } 
-   remove("Applicant.txt"); 
-   rename("example.txt", "Applicant.txt"); 
-  } 
          
         //check the node 
         bool checkNode(Applicant* s){ 
@@ -120,101 +116,100 @@ class Stack{
             return exist; 
         } 
  
-  //Search an applicant 
-        void searchApplicant(int searchID){ 
+    //Search an applicant 
+    void searchApplicant(int searchID){ 
  
-   string name; 
-   string study; 
-   float cgpa; 
-   int age; 
-   int id; 
- 
-   int found=0; 
- 
-   fstream infile("Applicant.txt",ios::in); 
-   infile>>id>>name>>study>>cgpa>>age; 
-   while(!infile.eof()){ 
-    if(id==searchID){ 
-     cout<<endl<<"|||||||||||||Applicant Details|||||||||||||"<<endl; 
-     cout<<"Applicant ID: "<<id<<endl; 
-     cout<<"Applicant name: "<<name<<endl; 
-     cout<<"Applicant cgpa: "<<cgpa<<endl; 
-     cout<<"Applicant age: "<<age<<endl; 
-     cout<<endl; 
-     found=1; 
+	   string name; 
+	   string study; 
+	   float cgpa; 
+	   int age; 
+	   int id; 
+	 
+	   int found=0; 
+	 
+	   fstream infile("Applicant.txt",ios::in); 
+	   infile>>id>>name>>study>>cgpa>>age; 
+	    while(!infile.eof()){ 
+		    if(id==searchID){ 
+			    cout<<endl<<"|||||||||||||Applicant Details|||||||||||||"<<endl; 
+			    cout<<"Applicant ID: "<<id<<endl; 
+			    cout<<"Applicant name: "<<name<<endl; 
+			    cout<<"Applicant cgpa: "<<cgpa<<endl; 
+			    cout<<"Applicant age: "<<age<<endl; 
+			    cout<<endl; 
+			    found=1; 
+	    	} 
+	   		infile>>id>>name>>study>>cgpa>>age;     
+	    } 
+	    if(found==0){ 
+	        cout<<"Applicant not found"<<endl<<endl; 
+	    } 
     } 
-    infile>>id>>name>>study>>cgpa>>age;     
-   } 
-   if(found==0){ 
-             cout<<"Applicant not found"<<endl<<endl; 
-   } 
-        } 
  
-        //push the node 
-        void addApplicant(Applicant *s) { 
+    //push the node 
+    void addApplicant(Applicant *s) { 
              
-            if(top==NULL){ 
-             addToList(s); 
+        if(top==NULL){ 
+            addToList(s); 
                 top=s; 
-            } 
-            else if(checkNode(s)){ 
-                cout<<"xxxxxxx(ERROR : Same ID exists)xxxxxxx"<<endl; 
-            } 
-            else{ 
-             addToList(s); 
-                Applicant* temp=top; 
-                top=s; 
-                s->next=temp; 
-                 
-                cout<<"Applicant Added"<<endl; 
-            } 
         } 
+        else if(checkNode(s)){ 
+            cout<<"xxxxxxx(ERROR : Same ID exists)xxxxxxx"<<endl; 
+        } 
+        else{ 
+	        addToList(s); 
+	        Applicant* temp=top; 
+	        top=s; 
+	        s->next=temp; 
+	        cout<<"Applicant Added"<<endl; 
+        } 
+    } 
  
-        //pop operation  
-        void deleteApplicant(){ 
-            Applicant *temp=NULL; 
-            if(isEmpty()){ 
-                cout<<"Stack is empty"<<endl; 
-            } 
-            else{ 
-             deleteLastLine(); 
-                temp=top;
-top=top->next; 
-                delete temp; 
-                cout<<"Applicant data is deleted"<<endl; 
-            } 
+    //pop operation  
+    void deleteApplicant(){ 
+        Applicant *temp=NULL; 
+        if(isEmpty()){ 
+            cout<<"Stack is empty"<<endl; 
         } 
+        else{ 
+            deleteLastLine(); 
+            temp=top;
+            top=top->next; 
+            delete temp; 
+            cout<<"Applicant data is deleted"<<endl; 
+        } 
+    } 
  
-        //print the all elements 
-        void display(){ 
-            Applicant *temp; 
-            temp=top; 
-            if(isEmpty()){ 
-                cout<<"Stack is empty"<<endl; 
-            } 
-            else{ 
-                while(temp!=NULL){ 
-                    cout<<"Student ID: "<<temp->id<<endl; 
-                    cout<<"Student Name: "<<temp->name<<endl; 
-                    cout<<"Student CGPA: "<<temp->cgpa<<endl; 
-                    cout<<"Student age: "<<temp->age<<endl; 
-                    temp=temp->next; 
-                } 
+    //print the all elements 
+    void display(){ 
+        Applicant *temp; 
+        temp=top; 
+        if(isEmpty()){ 
+            cout<<"Stack is empty"<<endl; 
+        } 
+        else{ 
+            while(temp!=NULL){ 
+                cout<<"Student ID: "<<temp->id<<endl; 
+                cout<<"Student Name: "<<temp->name<<endl; 
+                cout<<"Student CGPA: "<<temp->cgpa<<endl; 
+                cout<<"Student age: "<<temp->age<<endl; 
+                temp=temp->next; 
             } 
         } 
+    } 
          
 };//end of stack class 
  
 class Queue{ 
   
- public: 
-  Applicant*front,*rear; 
-  Queue(){ 
-   front=NULL; 
-   rear=NULL; 
-  } 
+	public: 
+	   Applicant*front,*rear; 
+	   Queue(){ 
+		   front=NULL; 
+		   rear=NULL; 
+	    } 
    
-  //checking wheather list is empty or not  
+        //checking wheather list is empty or not  
         bool isEmpty(){ 
             if(front==NULL&&rear==NULL){ 
                 return true; 
@@ -226,69 +221,68 @@ class Queue{
          
         //Search an applicant 
         void searchApplicant(int id){ 
-         int found=0; 
+        	int found=0; 
             Applicant*temp=front; 
              
             while(temp!=NULL){ 
                 if(temp->id==id){ 
-     cout<<endl<<"|||||||||||||Applicant Details|||||||||||||"<<endl; 
-     cout<<"Applicant ID: "<<temp->id<<endl; 
-     cout<<"Applicant name: "<<temp->name<<endl; 
-     cout<<"Applicant cgpa: "<<temp->cgpa<<endl; 
-     cout<<"Applicant age: "<<temp->age<<endl; 
-      
-                 found=1; 
-                 
-                    break; 
-                } 
-                temp=temp->next; 
+				    cout<<endl<<"|||||||||||||Applicant Details|||||||||||||"<<endl; 
+				    cout<<"Applicant ID: "<<temp->id<<endl; 
+				    cout<<"Applicant name: "<<temp->name<<endl; 
+				    cout<<"Applicant cgpa: "<<temp->cgpa<<endl; 
+				    cout<<"Applicant age: "<<temp->age<<endl; 
+	      
+	                found=1; 
+	                break; 
+            	} 
+            	temp=temp->next; 
             } 
             if(found==0){ 
-             cout<<"Applicant not found"<<endl<<endl; 
-   } 
-        } 
+            	cout<<"Applicant not found"<<endl<<endl; 
+   			} 
+    	} 
    
-  //enQueue function 
-  void enQueue(Applicant*s){ 
-   if(isEmpty()){ 
-    front=s; 
-    rear=s; 
-   } 
-   else{ 
-    rear->next=s; 
-    rear=s; 
-   } 
-  } 
+  		//enQueue function 
+  		void enQueue(Applicant*s){ 
+	   		if(isEmpty()){ 
+			    front=s; 
+			    rear=s; 
+	   	    } 
+	   		else{ 
+			    rear->next=s; 
+			    rear=s; 
+	   		} 
+  		} 
    
-  //shortlist the applicant 
-  void shortlistApplicant(){ 
-   if(isEmpty()){ 
-    cout<<"No data"<<endl; 
-   } 
-   else{ 
-    ofstream sl_out("shortListedApplicant.txt",ios::app); 
-    string ch; 
-    Applicant* temp=front; 
-    while(temp!=NULL){ 
-     cout<<endl<<"|||||||||||||Applicant Details|||||||||||||"<<endl; 
-     cout<<"Applicant ID: "<<temp->id<<endl; 
-     cout<<"Applicant name: "<<temp->name<<endl; 
-     cout<<"Applicant cgpa: "<<temp->cgpa<<endl; 
-     cout<<"Applicant age: "<<temp->age<<endl; 
-     cout<<"Do you want to shortlist the applicant. Press y or n: "; 
-     cin>>ch; 
-     if(ch=="y"||ch=="Y"){ 
-               sl_out<<temp->id<<" "<<temp->name<<" "<<temp->study<<" "<<temp->cgpa<<" "<<temp->age<<endl; 
-      cout<<"Applicant has been shortlisted"<<endl<<endl; 
-     } 
-     else{ 
-      cout<<"Applicant data not added"<<endl; 
-     } 
-     temp=temp->next; 
-    } 
+  		//shortlist the applicant 
+  		void shortlistApplicant(){ 
+   			if(isEmpty()){ 
+    			cout<<"No data"<<endl; 
+   			} 
+  			else{ 
+			    ofstream sl_out("shortListedApplicant.txt",ios::app); 
+			    string ch; 
+			    Applicant* temp=front; 
+			    while(temp!=NULL){ 
+			    cout<<endl<<"|||||||||||||Applicant Details|||||||||||||"<<endl; 
+			    cout<<"Applicant ID: "<<temp->id<<endl; 
+			    cout<<"Applicant name: "<<temp->name<<endl; 
+			    cout<<"Applicant cgpa: "<<temp->cgpa<<endl; 
+			    cout<<"Applicant age: "<<temp->age<<endl; 
+			    cout<<"Do you want to shortlist the applicant. Press y or n: "; 
+			    cin>>ch; 
+			    if(ch=="y"||ch=="Y"){ 
+			            sl_out<<temp->id<<" "<<temp->name<<" "<<temp->study<<" "<<temp->cgpa<<" "<<temp->age<<endl; 
+			      		cout<<"Applicant has been shortlisted"<<endl<<endl; 
+			    } 
+			    else{ 
+			    	cout<<"Applicant data not added"<<endl; 
+			    } 
+			     temp=temp->next; 
+				} 
      
-   } 
-  } 
+   			} 
+  		} 
    
         //display all nodes in the queue 
         void display(){ 
@@ -299,9 +293,9 @@ class Queue{
                 cout<<"printing all nodes: "<<endl; 
                 Applicant* temp=front; 
                 while(temp!=NULL){ 
-                   cout<<endl<<"|||||||||||||Applicant Details|||||||||||||"<<endl; 
-     cout<<"Applicant ID: "<<temp->id<<endl; 
-     cout<<"Applicant name: "<<temp->name<<endl; 
+                    cout<<endl<<"|||||||||||||Applicant Details|||||||||||||"<<endl; 
+     				cout<<"Applicant ID: "<<temp->id<<endl; 
+     				cout<<"Applicant name: "<<temp->name<<endl; 
      cout<<"Applicant cgpa: "<<temp->cgpa<<endl; 
      cout<<"Applicant age: "<<temp->age<<endl; 
                     temp=temp->next; 
